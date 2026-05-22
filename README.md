@@ -2,9 +2,15 @@
 
 **PhotoFlow** is an agentic framework for language-conditioned virtual photography in controllable 3D scenes. Given a Blender scene and a natural-language photography intent, PhotoFlow searches for an executable camera state, including camera pose, look-at target, lens, aperture, and aspect ratio, then renders the final photograph.
 
-This repository will host the code and benchmark assets for our project:
-
 > PhotoFlow: Agentic 3D Virtual Photography Missions
+
+Project page: <https://visionary-laboratory.github.io/PhotoFlow/>
+
+Repository: <https://github.com/Visionary-Laboratory/PhotoFlow>
+
+## Teaser
+
+![PhotoFlow teaser](assets/teaser.png)
 
 ## Overview
 
@@ -13,6 +19,8 @@ PhotoFlow treats virtual photography as a closed-loop spatial-aesthetic search p
 - **Director** proposes diverse candidate camera states from scene scouts, soft photographic blueprints, global anchors, and region memory.
 - **Reviewer** evaluates rendered previews using structured rule checks, visual critique, and pairwise incumbent selection.
 - **Reflector** converts failures into search bias, dead-zone suppression, and high-exploration relocation.
+
+![PhotoFlow method overview](assets/method.png)
 
 We also introduce **VPhotoBench**, a benchmark of language-conditioned virtual photography missions over open-license Blender scenes. The benchmark is designed to evaluate whether an agent can satisfy spatial constraints, semantic intent, aspect-ratio choices, and photographic quality in fully virtual art scenes.
 

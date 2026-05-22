@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PhotoFlow: Agentic 3D Virtual Photography Missions">
+  <meta name="keywords" content="PhotoFlow, VPhotoBench, virtual photography, camera agent, Blender, vision-language model">
+  <title>PhotoFlow: Agentic 3D Virtual Photography Missions</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111827;
+      --muted: #5b6472;
+      --soft: #f6f7f9;
+      --line: #e5e7eb;
+      --accent: #1666d8;
+      --accent-dark: #0f3f88;
+      --panel: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #ffffff;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--accent-dark);
+      text-decoration: underline;
+    }
+
+    .wrap {
+      width: min(1120px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 58px 0 32px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fbfcfe 0%, #ffffff 78%);
+    }
+
+    .title {
+      margin: 0 auto 14px;
+      max-width: 950px;
+      font-size: clamp(2.15rem, 5vw, 4.1rem);
+      line-height: 1.04;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .subtitle {
+      max-width: 850px;
+      margin: 0 auto 20px;
+      color: var(--muted);
+      font-size: clamp(1.02rem, 2vw, 1.25rem);
+      text-align: center;
+    }
+
+    .authors,
+    .affiliations {
+      max-width: 980px;
+      margin: 0 auto;
+      text-align: center;
+      color: #2f3744;
+      font-size: 0.98rem;
+    }
+
+    .affiliations {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 24px 0 26px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 9px 16px;
+      border: 1px solid #cfd6e2;
+      border-radius: 999px;
+      color: #111827;
+      background: #fff;
+      font-weight: 650;
+      box-shadow: 0 1px 2px rgba(17, 24, 39, 0.05);
+    }
+
+    .button.primary {
+      border-color: #111827;
+      color: #fff;
+      background: #111827;
+    }
+
+    .button:hover {
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+
+    .hero-media {
+      overflow: hidden;
+      margin-top: 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #080b10;
+      box-shadow: 0 18px 50px rgba(17, 24, 39, 0.12);
+    }
+
+    .hero-media img,
+    .figure img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    section {
+      padding: 48px 0;
+    }
+
+    section.alt {
+      background: var(--soft);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: clamp(1.65rem, 3vw, 2.25rem);
+      line-height: 1.15;
+      letter-spacing: 0;
+      text-align: center;
+    }
+
+    .lead {
+      max-width: 850px;
+      margin: 0 auto 28px;
+      color: var(--muted);
+      font-size: 1.04rem;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 24px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+      box-shadow: 0 8px 24px rgba(17, 24, 39, 0.05);
+    }
+
+    .stat {
+      padding: 18px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 2rem;
+      line-height: 1.1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .two-col {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      align-items: center;
+      gap: 28px;
+    }
+
+    .text-block p {
+      margin: 0 0 14px;
+      color: #374151;
+    }
+
+    .role-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .role {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    .role strong {
+      display: block;
+      margin-bottom: 3px;
+      color: #111827;
+    }
+
+    .role span {
+      color: var(--muted);
+    }
+
+    .method-figure {
+      margin: 28px 0 18px;
+    }
+
+    .method-roles {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+
+    .figure {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .caption {
+      padding: 10px 14px 13px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .gallery-masonry {
+      columns: 4 260px;
+      column-gap: 16px;
+    }
+
+    .gallery-card {
+      display: inline-block;
+      position: relative;
+      width: 100%;
+      margin: 0 0 16px;
+      border: 0;
+      border-radius: 10px;
+      break-inside: avoid;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, 0.10);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+      vertical-align: top;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      background: #fff;
+      transition: transform 220ms ease;
+    }
+
+    .gallery-card:hover,
+    .gallery-card:focus-within {
+      z-index: 5;
+      transform: translateY(-3px) scale(1.025);
+      box-shadow: 0 22px 46px rgba(15, 23, 42, 0.22);
+    }
+
+    .gallery-card:hover img,
+    .gallery-card:focus-within img {
+      transform: scale(1.035);
+    }
+
+    .prompt-caption {
+      position: absolute;
+      inset: auto 0 0 0;
+      max-height: 78%;
+      overflow-y: auto;
+      padding: 54px 15px 14px;
+      border: 0;
+      color: rgba(255, 255, 255, 0.92);
+      background: linear-gradient(180deg, rgba(5, 7, 10, 0) 0%, rgba(5, 7, 10, 0.76) 34%, rgba(5, 7, 10, 0.94) 100%);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 180ms ease, transform 180ms ease;
+      pointer-events: none;
+    }
+
+    .gallery-card:hover .prompt-caption,
+    .gallery-card:focus-within .prompt-caption {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .prompt-caption .task {
+      display: block;
+      margin-bottom: 7px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.94rem;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+    }
+
+    .prompt-text {
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.82rem;
+      line-height: 1.45;
+    }
+
+    .prompt-caption p {
+      margin: 0;
+    }
+
+    .release {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .release .card {
+      padding: 18px;
+    }
+
+    .release h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .release p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .footer {
+      padding: 28px 0 42px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    @media (max-width: 860px) {
+      .stats,
+      .release,
+      .two-col,
+      .method-roles {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-masonry {
+        columns: 2 160px;
+        column-gap: 12px;
+      }
+
+      .prompt-caption {
+        position: static;
+        max-height: none;
+        overflow: visible;
+        padding: 10px 12px 12px;
+        color: var(--muted);
+        background: #fff;
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+      }
+
+      .prompt-caption .task {
+        color: #111827;
+        text-shadow: none;
+      }
+
+      .prompt-text {
+        color: var(--muted);
+      }
+
+      .hero {
+        padding-top: 38px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <h1 class="title">PhotoFlow: Agentic 3D Virtual Photography Missions</h1>
+      <p class="subtitle">
+        A Director-Reviewer-Reflector agent for language-conditioned virtual photography in controllable Blender scenes.
+      </p>
+      <div class="authors">
+        Jiarui Guo, Haojia Wei, Yiming Zhang, Yifei Liu, Yuning Gong, Hongjie Zhang, Xue Yang, Zhihang Zhong
+      </div>
+      <div class="affiliations">
+        Northeastern University &nbsp;|&nbsp; UCLA &nbsp;|&nbsp; Cornell University &nbsp;|&nbsp;
+        Shanghai Artificial Intelligence Laboratory &nbsp;|&nbsp; Shanghai Jiao Tong University
+      </div>
+      <div class="links">
+        <a class="button primary" href="https://github.com/Visionary-Laboratory/PhotoFlow">GitHub</a>
+        <a class="button" href="#gallery">Gallery</a>
+        <a class="button" href="#release">Release Plan</a>
+      </div>
+      <div class="hero-media">
+        <img src="assets/teaser.png" alt="PhotoFlow virtual photography teaser">
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="wrap">
+        <h2>Virtual Photography as Spatial-Aesthetic Search</h2>
+        <p class="lead">
+          PhotoFlow asks an agent to enter a prepared 3D scene with no preselected camera pose,
+          infer a suitable shot from scene information and a language intent, choose executable
+          camera parameters, and render the final photograph.
+        </p>
+        <div class="grid stats">
+          <div class="card stat">
+            <strong>47</strong>
+            <span>open-license Blender scenes</span>
+          </div>
+          <div class="card stat">
+            <strong>141</strong>
+            <span>language-conditioned missions</span>
+          </div>
+          <div class="card stat">
+            <strong>3</strong>
+            <span>mission families</span>
+          </div>
+          <div class="card stat">
+            <strong>6</strong>
+            <span>round search budget</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="alt">
+      <div class="wrap">
+        <div class="text-block">
+          <h2>Method Overview</h2>
+          <p class="lead">
+            PhotoFlow treats camera placement as finite-horizon feedback-driven search over executable
+            camera states, including pose, look-at target, lens, aperture, and aspect ratio.
+          </p>
+          <figure class="figure method-figure">
+            <img src="assets/method.png" alt="PhotoFlow method pipeline">
+            <figcaption class="caption">The closed-loop Director-Reviewer-Reflector pipeline.</figcaption>
+          </figure>
+          <div class="role-list method-roles">
+            <div class="role">
+              <strong>Director</strong>
+              <span>Builds a soft photographic blueprint and proposes diverse candidate camera states.</span>
+            </div>
+            <div class="role">
+              <strong>Reviewer</strong>
+              <span>Scores rendered previews with rule checks, visual critique, and pairwise incumbent selection.</span>
+            </div>
+            <div class="role">
+              <strong>Reflector</strong>
+              <span>Turns failures into region memory, dead-zone suppression, and high-explore relocation.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="gallery">
+      <div class="wrap">
+        <h2>Qualitative Gallery</h2>
+        <p class="lead">
+          Selected PhotoFlow final renders from VPhotoBench. Hover over an image to view the
+          source scene, prompt type, and corresponding task prompt.
+        </p>
+        <div class="gallery-masonry" aria-label="Selected PhotoFlow gallery">
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/3_1.jpg" alt="PhotoFlow result for scene 003 atmosphere style">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 003 - atmosphere_style</span>
+              <div class="prompt-text"><p>The scene is built entirely upon the dramatic tension between absolute darkness and intense self-generated luminescence, the deer's golden-white particle body functions as the scene's sole light source casting warm amber light onto the immediate forest floor and cool green light onto surrounding ferns, the dense forest backdrop is rendered in deep desaturated greens and near-blacks that absorb all ambient light and force complete visual attention onto the glowing subject, flowing hair-like particle strands suggest both physical movement and spiritual energy simultaneously, the overall atmosphere is one of sacred silence - as if the viewer has stumbled upon a divine forest apparition that exists between the natural and supernatural worlds, cinematic color grading with crushed blacks and selectively preserved warm highlights reinforces the mythological weight of the scene.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/5_3.jpg" alt="PhotoFlow result for scene 005 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 005 - subject_placement</span>
+              <div class="prompt-text"><p>A vintage tram car serves as the dominant architectural subject occupying the central two-thirds of the frame, shot with a wide-angle lens from a slightly elevated three-quarter perspective looking slightly downward into the street scene, a crouching figure with skateboard positioned at the lower-center-left at street level serves as the primary human narrative anchor, a second standing figure visible through the tram window at mid-frame provides secondary human depth, the large decorative arch structure frames the entire right edge of the composition, stacked urban buildings cascade upward to the left with a giant cat mural anchoring the upper-left corner, camera distance calibrated to simultaneously reveal street-level human activity and the full vertical complexity of the surrounding urban environment.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/6_3.jpg" alt="PhotoFlow result for scene 006 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 006 - subject_placement</span>
+              <div class="prompt-text"><p>A round-faced stylized cat creature serves as the absolute hero subject, shot with a short telephoto lens from a direct eye-level angle precisely matching the animal's face height as it rests in the grass, the cat's face occupies the upper-left two-thirds of the frame with closed teardrop eyes positioned at the horizontal midline, the creature's body dissolves downward into dense grass that fills the lower third of the frame as a natural foreground layer, a small suspended object hangs from above in the upper-center acting as a subtle secondary focal accent, camera distance set to an intimate close-up range that renders individual fur texture and the delicate teardrop detail while retaining enough environmental context to establish the outdoor grass setting, depth of field set shallow with the grass foreground softly blurred to isolate the face as the singular point of crisp focus.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/8_2.jpg" alt="PhotoFlow result for scene 008 relational composition">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 008 - relational_composition</span>
+              <div class="prompt-text"><p>The composition is governed by strict bilateral symmetry - left sofa mirrors right sofa, left artwork mirrors right artwork, left wall mirrors right wall - creating a formal architectural rhythm that reinforces the space's luxury positioning, the central window functions as a luminous vanishing point that pulls all perspective lines and visual attention toward the garden view beyond, the floor lamp at center-frame provides a delicate vertical accent that punctuates the symmetry without disrupting it, the textured rug visible at the lower frame edge establishes material richness at the viewer's feet before the eye travels upward through the space, the staircase visible through the right-of-center passage introduces asymmetric depth that prevents the symmetry from becoming sterile, abstract wall artworks in black ink on white provide maximum tonal contrast against the warm neutral palette of all other surfaces.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/11_1.jpg" alt="PhotoFlow result for scene 011 atmosphere style">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 011 - atmosphere_style</span>
+              <div class="prompt-text"><p>The scene is rendered with the visual grammar of a living fantasy map - architectural styles blend medieval European stone construction with fantastical scale exaggerations that signal a world operating under different physical and historical rules, warm overcast lighting bathes the entire city in even soft illumination that minimizes harsh shadows and maximizes the readability of complex architectural detail across the full aerial distance, the particle-scattered vegetation creates dense green accents that punctuate the warm stone tones of the architecture throughout the composition, the sense of inhabited complexity - suggesting centuries of organic urban growth rather than planned construction - is the scene's primary atmospheric achievement, the overall mood is one of epic world-building grandeur: the feeling of encountering a civilization fully realized and awaiting exploration.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/13_1.jpg" alt="PhotoFlow result for scene 013 atmosphere style">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 013 - atmosphere_style</span>
+              <div class="prompt-text"><p>The stylized animation aesthetic renders snow, characters and environment in soft rounded forms communicating safety and playfulness rather than harshness, cool blue-white snow tones are counterbalanced by the warm earth colors of the dog's fur and the girl's brightly colored winter clothing, diffused overcast winter daylight provides even illumination that eliminates harsh shadows and renders every surface in clean readable values, the overall atmosphere is one of pure uncomplicated childhood joy - the specific happiness of a snowy day when every surface becomes a playground.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/17_3.jpg" alt="PhotoFlow result for scene 017 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 017 - subject_placement</span>
+              <div class="prompt-text"><p>A dramatically bare and ancient tree occupies the dominant portion of the frame as the primary structural subject, shot with a wide-angle lens from a very low angle looking upward through the branch canopy, the massive trunk enters the frame from the lower-center and its primary branches spread outward to fill the upper two-thirds of the composition, scattered glowing amber and orange ember particles cling to and float away from every branch surface creating a living constellation of light, a luminous full moon positioned in the upper-center behind the branch network provides the scene's primary backlight source.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/19_2.jpg" alt="PhotoFlow result for scene 019 relational composition">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 019 - relational_composition</span>
+              <div class="prompt-text"><p>The succession of arched columns receding from the immediate foreground to the far background creates a powerful rhythmic perspective system drawing the eye deeply into the courtyard space, the shadowed arcade foreground zone contrasts dramatically with the sunlit courtyard center creating a threshold effect that separates the viewer's shaded position from the luminous destination beyond, the fountain structure at the courtyard center aligns precisely with the frame's central vertical axis providing a compositional anchor for the symmetrical colonnaded architecture, foreground books and wooden implements scattered on the workbench establish a narrative of scholarly monastic activity giving the space human presence without requiring human figures.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/22_3.jpg" alt="PhotoFlow result for scene 022 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 022 - subject_placement</span>
+              <div class="prompt-text"><p>A stylized cartoon delivery scooter with its rider and impossibly tall stack of pizza boxes serves as the singular hero subject, shot with a wide-angle lens from a very low angle looking upward at approximately 20 degrees, the red scooter occupies the center-left of the frame with the rider's body and the towering pizza stack rising vertically to dominate the upper two-thirds of the composition, the cobblestone street surface fills the foreground establishing the ground plane, a street lamp post enters the frame from the right edge creating a secondary vertical element, camera distance set close to the scooter to maximize the comic distortion of the pizza stack's impossible height.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/25_1.jpg" alt="PhotoFlow result for scene 025 atmosphere style">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 025 - atmosphere_style</span>
+              <div class="prompt-text"><p>The rendering achieves a high-quality stylized animation aesthetic that balances physical believability with cartoon expressiveness - the sheep's wool is rendered with genuine fiber complexity while maintaining the rounded simplified silhouette of an illustrated character, the dramatic sky with its dark storm clouds and warm horizon glow creates cinematic lighting that elevates a fundamentally comic premise to something approaching genuine narrative weight, the grassland environment rendered with scattered vegetation and subtle ground texture establishes a specific natural setting without overwhelming the character-focused composition, the overall atmosphere captures the precise tonal register of contemporary animated feature storytelling - finding genuine emotional stakes within inherently absurd situations.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/26_3.jpg" alt="PhotoFlow result for scene 026 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 026 - subject_placement</span>
+              <div class="prompt-text"><p>A fully detailed vintage American barbershop interior is presented as the primary environmental subject, shot with a wide-angle lens from a low eye-level perspective approximately 120cm above the worn wooden floor, two classic red leather barber chairs dominate the center-foreground of the frame facing the viewer, a long counter with mirrors and grooming equipment lines the left wall receding into depth, the rear wall is entirely covered with framed photographs and portraits creating a dense textural collage, camera positioned just inside the entrance to maximize the spatial depth revelation from entrance to far rear.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/27_2.jpg" alt="PhotoFlow result for scene 027 relational composition">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 027 - relational_composition</span>
+              <div class="prompt-text"><p>The window apertures function as framing devices within the frame - each window border creates an independent compositional rectangle containing and organizing its respective interior view, the white wall surface between and around the windows establishes a strong geometric grid imposing rational order on the domestic interior it reveals, the slight asymmetry between the narrow bedroom window and the wider living area window creates compositional variety preventing the facade from reading as purely symmetrical, interior furnishing visible through each window provides scale reference and domestic narrative context giving the architectural presentation human dimension.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/28_3.jpg" alt="PhotoFlow result for scene 028 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 028 - subject_placement</span>
+              <div class="prompt-text"><p>A stylized cycling girl and her small robot passenger serve as the dual hero subjects within a flat illustrated composition, shot from a perfectly perpendicular side profile angle that eliminates all perspective depth, the girl and bicycle occupy the left-center of the frame in complete lateral profile view with both figures and the bicycle visible in their entirety as flat silhouette forms, horizontal speed-line elements streak across the blue background at mid-frame height suggesting rapid lateral motion, the composition is treated as a pure 2D illustration rather than a 3D scene - depth communicated entirely through overlapping flat shapes.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/31_3.jpg" alt="PhotoFlow result for scene 031 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 031 - subject_placement</span>
+              <div class="prompt-text"><p>A tall-masted sailing ship serves as the singular hero subject silhouetted against an enormous full moon rising from the ocean horizon, shot with a moderate telephoto lens from a low eye-level angle just above the ocean surface, the ship occupies the center of the frame with its full mast-to-hull profile visible against the luminous moon disk, the moon's diameter is approximately twice the height of the ship creating a dramatic scale relationship that emphasizes the vessel's vulnerability within the natural environment, ocean waves fill the foreground from the bottom frame edge to the waterline establishing the viewer's position at sea level, camera distance calibrated to keep the ship's complete silhouette within the moon's disk perimeter creating a perfectly framed compositional relationship.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/34_2.jpg" alt="PhotoFlow result for scene 034 relational composition">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 034 - relational_composition</span>
+              <div class="prompt-text"><p>The mug's cylindrical form positioned at the left-center creates the dominant vertical anchor around which all other elements are organized, the saucer's circular white form at the base of the mug provides a clean geometric platform that separates the hero object from the scattered bean environment below, the two chocolate pieces on the saucer positioned at the lower-right golden ratio zone create secondary focal interest that extends the viewer's engagement beyond the mug itself, scattered coffee beans receding from sharp foreground to soft background create a powerful depth gradient that gives the flat tabletop surface three-dimensional spatial richness, the warm golden light bloom in the upper-right corner creates a luminous environmental backdrop that provides chromatic warmth against the cool blue of the mug - establishing the composition's primary chromatic tension.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/36_1.jpg" alt="PhotoFlow result for scene 036 atmosphere style">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 036 - atmosphere_style</span>
+              <div class="prompt-text"><p>The scene is rendered in a high-key Nordic interior aesthetic - the pale teal-sage wall color, natural oak shelf surface and white sculptural objects combine in a palette of extreme chromatic restraint that communicates designed serenity rather than accidental neutrality, soft diffused daylight from an off-frame window source wraps every surface in even shadowless illumination that highlights material texture without creating dramatic contrast, the low-poly geometric treatment of both the deer head and panther figurine reads simultaneously as contemporary art object and mass-market decorative product - occupying the precise aesthetic territory of Scandinavian design retail, the bare branch in the glass vase introduces the only organic irregular element within an otherwise geometrically controlled composition, the overall atmosphere communicates the aspirational simplicity of Nordic interior design - a visual philosophy in which restraint, material honesty and considered proportion are the highest form of domestic beauty.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/37_3.jpg" alt="PhotoFlow result for scene 037 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 037 - subject_placement</span>
+              <div class="prompt-text"><p>A cluttered American vintage attic room is presented as the primary environmental subject with no single hero object, shot with a wide-angle lens from a low first-person eye-level perspective approximately 100cm above the wooden floor, the view extends from the immediate foreground floor surface across the full width of the room to the far rear wall, a Babe Ruth sports poster dominates the left wall at mid-height functioning as the scene's primary graphic anchor, an old television monitor sits on a wooden cabinet below the poster, a globe and bookshelf occupy the right-center background, a baseball bat enters the frame from the extreme right foreground creating an intimate close proximity prop, papers and objects are scattered across the floor in a mid-action frozen state suggesting a moment of disruption rather than settled habitation.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/38_3.jpg" alt="PhotoFlow result for scene 038 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 038 - subject_placement</span>
+              <div class="prompt-text"><p>A cozy A-frame cabin bedroom interior is presented with the triangular floor-to-ceiling window as the compositional hero element, shot with a standard lens from a low seated eye-level perspective approximately 80cm above the wooden floor looking directly toward the apex window, the triangular window frame occupies the upper two-thirds of the frame revealing a rain-soaked pine forest beyond, an orange armchair and floor lamp positioned in the left-center foreground serve as the scene's primary warm interior anchors, a bed partially visible at the lower-right edge establishes the room's sleeping function, camera distance set from the room's rear wall to capture the complete triangular window geometry from floor junction to apex while keeping both the armchair and the exterior forest view within the same frame.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/41_1.jpg" alt="PhotoFlow result for scene 041 atmosphere style">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 041 - atmosphere_style</span>
+              <div class="prompt-text"><p>The scene is rendered with the chromatic language of Hubble Space Telescope false-color nebula imaging - the deep blue-purple of ionized hydrogen, the warmer rose-red of emission regions and the teal-cyan of reflected starlight combine in a palette that is simultaneously scientifically referenced and aesthetically extraordinary, the volumetric rendering of the gas clouds achieves genuine three-dimensional depth - the clouds read as occupying real space rather than as painted backdrops, with clearly distinguishable near and far zones that reward extended spatial reading, the single star point provides essential chromatic contrast - its pure white brightness against the surrounding colored gas emphasizes the nebula's own luminosity and reminds the viewer that this is a stellar nursery where new suns are being born, the overall atmosphere communicates the most extreme version of the cosmic sublime - a scale of beauty so far beyond human comprehension that it can only be experienced as pure aesthetic overwhelm, the specific emotion of encountering something so vast and so indifferent to human existence that it temporarily dissolves the boundaries of the self.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/44_3.jpg" alt="PhotoFlow result for scene 044 subject placement">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 044 - subject_placement</span>
+              <div class="prompt-text"><p>An open ancient manuscript book serves as the absolute primary hero subject occupying the dominant central portion of the frame, shot with a macro lens from a high oblique angle approximately 60 degrees above horizontal looking downward at the spread pages, the open book fills approximately 70% of the frame with its aged parchment pages fully revealed showing hand-drawn illustrations and old script text, a brass magnifying glass rests on the right page at the lower golden ratio intersection providing a secondary focal element, a lit candle and candleholder occupy the lower-right edge while a partially visible hourglass stands at the upper frame edge, the cracked dark wooden surface beneath the book provides a textural foundation that reinforces the scene's antiquity, camera distance calibrated to render individual ink strokes of the manuscript text and the dragon/bird illustration on the left page at maximum legibility while keeping both page spreads fully within the frame.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/46_1.jpg" alt="PhotoFlow result for scene 046 atmosphere style">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 046 - atmosphere_style</span>
+              <div class="prompt-text"><p>Overall cold teal-grey palette projects an oppressive industrial melancholy, flat overcast diffused lighting eliminates harsh shadows and renders the ship's metal hull in even, desaturated tones that emphasize surface wear and mechanical texture, thin ground fog unifies the lower third of the frame and visually anchors the ship to the environment, the single red accent light on the fuselage and the warm tones of the hover vehicle provide the only chromatic contrast against the monochromatic scene, low saturation combined with slight atmospheric haze creates a desolate, rain-soaked airfield atmosphere that is simultaneously cinematic and grounded.</p>
+              </div>
+            </figcaption>
+          </figure>
+          <figure class="figure gallery-card">
+            <img src="assets/gallery_web/47_1.jpg" alt="PhotoFlow result for scene 047 atmosphere style">
+            <figcaption class="prompt-caption">
+              <span class="task">Scene 047 - atmosphere_style</span>
+              <div class="prompt-text"><p>The scene is rendered in an exclusively warm neutral palette - taupe, camel, warm grey and natural linen - in which every material choice communicates considered luxury through restraint rather than ostentation, natural daylight flooding through the floor-to-ceiling window provides the dominant light source creating gentle directional shadows that reveal the tactile complexity of upholstered and textile surfaces, the exposed concrete ceiling and warm wood floor create a deliberate material tension between industrial rawness and domestic refinement that defines the contemporary luxury aesthetic, the black-and-white photographic artworks above the bed provide graphic tonal contrast that anchors the warm neutral palette, the overall atmosphere communicates the aspirational quality of a boutique hotel suite - impeccably appointed, materially honest and designed to make sleep feel like an act of considered indulgence.</p>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section id="release">
+      <div class="wrap">
+        <h2>Public Release Plan</h2>
+        <p class="lead">
+          The repository is being organized for a staged release of the agent, benchmark metadata,
+          evaluation scripts, and reproduction materials.
+        </p>
+        <div class="grid release">
+          <div class="card">
+            <h3>Agent Code</h3>
+            <p>Director-Reviewer-Reflector implementation, prompts, JSON schemas, and run configurations.</p>
+          </div>
+          <div class="card">
+            <h3>VPhotoBench</h3>
+            <p>Scene registry, task specifications, benchmark construction notes, and asset metadata.</p>
+          </div>
+          <div class="card">
+            <h3>Evaluation</h3>
+            <p>External metric aggregation, baseline configs, ablation summaries, and selected logs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      PhotoFlow project page. Repository:
+      <a href="https://github.com/Visionary-Laboratory/PhotoFlow">github.com/Visionary-Laboratory/PhotoFlow</a>
+    </div>
+  </footer>
+</body>
+</html>

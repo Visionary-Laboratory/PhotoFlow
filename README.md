@@ -1,12 +1,11 @@
-# PhotoFlow
+# PhotoFlow: Agentic 3D Virtual Photography Missions
+
+<p align="left">
+  <a href="https://arxiv.org/abs/2605.23771"><img src="https://img.shields.io/badge/arXiv-2603.07660-b31b1b.svg" alt="arXiv"></a>
+  <a href="https://visionary-laboratory.github.io/PhotoFlow/"><img src="https://img.shields.io/badge/Website-Project-blue" alt="Website"></a>
+</p>
 
 **PhotoFlow** is an agentic framework for language-conditioned virtual photography in controllable 3D scenes. Given a Blender scene and a natural-language photography intent, PhotoFlow searches for an executable camera state, including camera pose, look-at target, lens, aperture, and aspect ratio, then renders the final photograph.
-
-> PhotoFlow: Agentic 3D Virtual Photography Missions
-
-Project page: <https://visionary-laboratory.github.io/PhotoFlow/>
-
-Repository: <https://github.com/Visionary-Laboratory/PhotoFlow>
 
 ## Teaser
 

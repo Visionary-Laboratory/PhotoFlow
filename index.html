@@ -588,9 +588,11 @@
       </div>
       <div class="links">
         <a class="button primary" href="https://github.com/Visionary-Laboratory/PhotoFlow">GitHub</a>
-        <a class="button" href="http://arxiv.org/abs/2605.23771" target="_blank">arXiv</a>
+        <a class="button" href="https://arxiv.org/abs/2605.23771" target="_blank" rel="noopener">arXiv</a>
+        <a class="button" href="https://huggingface.co/papers/2605.23771" target="_blank" rel="noopener">HF Paper</a>
+        <a class="button" href="https://huggingface.co/datasets/sjijs/VPhotoBench" target="_blank" rel="noopener">Dataset</a>
         <a class="button" href="#gallery">Gallery</a>
-        <a class="button" href="#release">Release Plan</a>
+        <a class="button" href="#release">Resources</a>
       </div>
       <div class="hero-media">
         <img src="assets/teaser.png" alt="PhotoFlow virtual photography teaser">
@@ -848,23 +850,26 @@
 
     <section id="release">
       <div class="wrap">
-        <h2>Public Release Plan</h2>
+        <h2>Resources</h2>
         <p class="lead">
-          The repository is being organized for a staged release of the agent, benchmark metadata,
-          evaluation scripts, and reproduction materials.
+          The paper and benchmark are public. VPhotoBench is hosted on Hugging Face with the
+          scene files, task specifications, asset metadata, licenses, and attribution tables.
         </p>
         <div class="grid release">
           <div class="card">
-            <h3>Agent Code</h3>
-            <p>Director-Reviewer-Reflector implementation, prompts, JSON schemas, and run configurations.</p>
+            <h3>Paper</h3>
+            <p>
+              <a href="https://arxiv.org/abs/2605.23771" target="_blank" rel="noopener">arXiv:2605.23771</a><br>
+              <a href="https://huggingface.co/papers/2605.23771" target="_blank" rel="noopener">Hugging Face paper page</a>
+            </p>
           </div>
           <div class="card">
             <h3>VPhotoBench</h3>
-            <p>Scene registry, task specifications, benchmark construction notes, and asset metadata.</p>
+            <p><a href="https://huggingface.co/datasets/sjijs/VPhotoBench" target="_blank" rel="noopener">Hugging Face dataset</a></p>
           </div>
           <div class="card">
-            <h3>Evaluation</h3>
-            <p>External metric aggregation, baseline configs, ablation summaries, and selected logs.</p>
+            <h3>Code</h3>
+            <p>PhotoFlow agent code and evaluation scripts will be released in this repository.</p>
           </div>
         </div>
       </div>

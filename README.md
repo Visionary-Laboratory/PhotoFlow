@@ -1,4 +1,4 @@
-# PhotoFlow: Agentic 3D Virtual Photography Missions
+# [NeurIPS 2026] PhotoFlow: Agentic 3D Virtual Photography Missions
 
 <p align="left">
   <a href="https://arxiv.org/abs/2605.23771"><img src="https://img.shields.io/badge/arXiv-2605.23771-b31b1b.svg" alt="arXiv"></a>

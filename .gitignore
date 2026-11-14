@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.DS_Store
+.env
+.venv/
+venv/
+
+output/
+preview_logs/
+*.blend
+*.blend1
+
+*.zip
+*.tar.gz
+*.7z

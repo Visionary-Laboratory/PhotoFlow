@@ -1,0 +1,2 @@
+# Runner and Blender embedded Python.
+openai>=1.0,<2
